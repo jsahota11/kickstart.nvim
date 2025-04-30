@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -276,8 +276,158 @@ require('lazy').setup({
     },
   },
 
+  {
+    'scottmckendry/cyberdream.nvim',
+    lazy = false, -- this is always on startup i like this one
+    priority = 1000,
+  },
+
+  {
+    'vidocqh/auto-indent.nvim',
+    opts = {},
+  },
+
+  -- Core DAP plugin
+  {
+    'mfussenegger/nvim-dap',
+    dependencies = {
+      -- UI for nvim-dap
+      {
+        'rcarriga/nvim-dap-ui',
+        config = function()
+          local dap, dapui = require 'dap', require 'dapui'
+          dapui.setup()
+          dap.listeners.after.event_initialized['dapui_config'] = function()
+            dapui.open()
+          end
+          dap.listeners.before.event_terminated['dapui_config'] = function()
+            dapui.close()
+          end
+          dap.listeners.before.event_exited['dapui_config'] = function()
+            dapui.close()
+          end
+        end,
+      },
+    },
+    config = function()
+      local dap = require 'dap'
+
+      -- Example for setting up an adapter (you'll need to configure based on your language)
+      -- For Python:
+      -- require("dap-python").setup("~/.virtualenvs/debugpy/bin/python")
+
+      -- Set signs
+      vim.fn.sign_define('DapBreakpoint', { text = '', texthl = 'DiagnosticError', linehl = '', numhl = '' })
+    end,
+  },
+
+  -- Neotest (for running tests with adapters)
+  {
+    'nvim-neotest/neotest',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-neotest/nvim-nio',
+      -- Add your language-specific adapter(s)
+      'nvim-neotest/neotest-python', -- For Python
+      'marilari88/neotest-vitest', -- For JS Vitest
+      'nvim-neotest/neotest-jest', -- for JS
+    },
+    config = function()
+      require('neotest').setup {
+        adapters = {
+          require 'neotest-python' {
+            dap = { justMyCode = false },
+          },
+          require 'neotest-vitest' {
+            dap = { justMyCode = false },
+          },
+          require 'neotest-jest' {
+            dap = { justMyCode = false },
+          },
+        },
+      }
+    end,
+  },
+
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
+  --
+  -- Themes go here!!
+
+  {
+    'folke/tokyonight.nvim',
+    lazy = true,
+    opts = { style = 'moon' },
+  },
+
+  {
+    'catppuccin/nvim',
+    lazy = true,
+    name = 'catppuccin',
+    opts = {
+      integrations = {
+        aerial = true,
+        alpha = true,
+        cmp = true,
+        dashboard = true,
+        flash = true,
+        fzf = true,
+        grug_far = true,
+        gitsigns = true,
+        headlines = true,
+        illuminate = true,
+        indent_blankline = { enabled = true },
+        leap = true,
+        lsp_trouble = true,
+        mason = true,
+        markdown = true,
+        mini = true,
+        native_lsp = {
+          enabled = true,
+          underlines = {
+            errors = { 'undercurl' },
+            hints = { 'undercurl' },
+            warnings = { 'undercurl' },
+            information = { 'undercurl' },
+          },
+        },
+        navic = { enabled = true, custom_bg = 'lualine' },
+        neotest = true,
+        neotree = true,
+        noice = true,
+        notify = true,
+        semantic_tokens = true,
+        snacks = true,
+        telescope = true,
+        treesitter = true,
+        treesitter_context = true,
+        which_key = true,
+      },
+    },
+    specs = {
+      {
+        'akinsho/bufferline.nvim',
+        optional = true,
+        opts = function(_, opts)
+          if (vim.g.colors_name or ''):find 'catppuccin' then
+            opts.highlights = require('catppuccin.groups.integrations.bufferline').get()
+          end
+        end,
+      },
+    },
+  },
+
+  {
+    'akinsho/bufferline.nvim',
+    optional = true,
+    opts = function(_, opts)
+      if (vim.g.colors_name or ''):find 'catppuccin' then
+        opts.highlights = require('catppuccin.groups.integrations.bufferline').get()
+      end
+    end,
+  },
+
   -- This is often very useful to both group configuration, as well as handle
   -- lazy loading plugins that don't need to be loaded immediately at startup.
   --
@@ -467,6 +617,7 @@ require('lazy').setup({
       },
     },
   },
+
   {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
@@ -539,7 +690,7 @@ require('lazy').setup({
           map('grr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
 
           -- Jump to the implementation of the word under your cursor.
-          --  Useful when your language has ways of declaring types without an actual implementation.
+          --  Useful when your language has ways of declaring types without an actual implementatio/.
           map('gri', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
 
           -- Jump to the definition of the word under your cursor.
@@ -771,6 +922,7 @@ require('lazy').setup({
 
   { -- Autocompletion
     'saghen/blink.cmp',
+    lazy = false,
     event = 'VimEnter',
     version = '1.*',
     dependencies = {
@@ -874,7 +1026,7 @@ require('lazy').setup({
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
     'folke/tokyonight.nvim',
-    priority = 1000, -- Make sure to load this before all the other start plugins.
+    priority = 999, -- Make sure to load this before all the other start plugins.
     config = function()
       ---@diagnostic disable-next-line: missing-fields
       require('tokyonight').setup {
@@ -886,7 +1038,6 @@ require('lazy').setup({
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
     end,
   },
 
@@ -916,7 +1067,7 @@ require('lazy').setup({
       --  and try some other statusline plugin
       local statusline = require 'mini.statusline'
       -- set use_icons to true if you have a Nerd Font
-      statusline.setup { use_icons = vim.g.have_nerd_font }
+      statusline.setup { use_icons = true }
 
       -- You can configure sections in the statusline by overriding their
       -- default behavior. For example, here we set the section for
@@ -965,18 +1116,18 @@ require('lazy').setup({
   --  Here are some example plugins that I've included in the Kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
-  -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'kickstart.plugins.debug',
+  require 'kickstart.plugins.indent_line',
+  require 'kickstart.plugins.lint',
+  require 'kickstart.plugins.autopairs',
+  require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
@@ -1003,6 +1154,8 @@ require('lazy').setup({
     },
   },
 })
+
+vim.cmd 'colorscheme cyberdream'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
