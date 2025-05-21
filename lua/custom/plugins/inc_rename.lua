@@ -6,5 +6,6 @@ return {
       require('inc_rename').setup()
     end,
     opts = {},
+    enabled = false,
   },
 }

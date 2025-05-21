@@ -1,6 +1,6 @@
 return {
   {
     'onsails/lspkind.nvim',
-    lazy = true,
+    enabled = false,
   },
 }
