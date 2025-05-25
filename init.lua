@@ -239,7 +239,7 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  --'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -280,12 +280,67 @@ require('lazy').setup({
     'scottmckendry/cyberdream.nvim',
     lazy = false, -- this is always on startup i like this one
     priority = 1000,
+    config = function ()
+      require("cyberdream").setup({
+    -- Set light or dark variant
+    variant = "default", -- use "light" for the light variant. Also accepts "auto" to set dark or light colors based on the current value of `vim.o.background`
+
+    -- Enable transparent background
+    transparent = false,
+
+    -- Reduce the overall saturation of colours for a more muted look
+    saturation = 1, -- accepts a value between 0 and 1. 0 will be fully desaturated (greyscale) and 1 will be the full color (default)
+
+    -- Enable italics comments
+    italic_comments = true,
+
+    -- Replace all fillchars with ' ' for the ultimate clean look
+    hide_fillchars = false,
+
+    -- Apply a modern borderless look to pickers like Telescope, Snacks Picker & Fzf-Lua
+    borderless_pickers = true,
+
+    -- Set terminal colors used in `:terminal`
+    terminal_colors = true,
+
+    -- Improve start up time by caching highlights. Generate cache with :CyberdreamBuildCache and clear with :CyberdreamClearCache
+    cache = false,
+
+    colors = {
+          bg = '#000000',
+          bg_alt = '#202121',
+          bg_highlight = '#4d4d4d',
+
+          fg = '#eeeeee',
+
+          blue = '#8173f5',
+
+          grey = '#a8a5a5',
+          green = '#00ff15',
+          cyan = '#17d9ff',
+          red = '#85111d',
+          yellow = '#fdff85',
+          magenta = '#6e244e',
+          pink = '#f65353',
+          orange = '#e6754c',
+          purple = '#fa5ced'
+
+        },
+
+    -- Disable or enable colorscheme extensions
+    extensions = {
+        telescope = true,
+        mini = true,
+
+    },
+})
+    end
   },
 
-  {
-    'vidocqh/auto-indent.nvim',
-    opts = {},
-  },
+  -- {
+  -- 'vidocqh/auto-indent.nvim',
+  -- opts = {},
+  -- },
 
   -- Core DAP plugin
   {
@@ -321,112 +376,113 @@ require('lazy').setup({
     end,
   },
 
-  -- Neotest (for running tests with adapters)
-  {
-    'nvim-neotest/neotest',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-treesitter/nvim-treesitter',
-      'nvim-neotest/nvim-nio',
-      -- Add your language-specific adapter(s)
-      'nvim-neotest/neotest-python', -- For Python
-      'marilari88/neotest-vitest', -- For JS Vitest
-      'nvim-neotest/neotest-jest', -- for JS
-    },
-    config = function()
-      require('neotest').setup {
-        adapters = {
-          require 'neotest-python' {
-            dap = { justMyCode = false },
-          },
-          require 'neotest-vitest' {
-            dap = { justMyCode = false },
-          },
-          require 'neotest-jest' {
-            dap = { justMyCode = false },
-          },
-        },
-      }
-    end,
-  },
+  -- -- Neotest (for running tests with adapters)
+  -- {
+  --   enabled = false,
+  --   'nvim-neotest/neotest',
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim',
+  --     'nvim-treesitter/nvim-treesitter',
+  --     'nvim-neotest/nvim-nio',
+  --     -- Add your language-specific adapter(s)
+  --     'nvim-neotest/neotest-python', -- For Python
+  --     'marilari88/neotest-vitest', -- For JS Vitest
+  --     'nvim-neotest/neotest-jest', -- for JS
+  --   },
+  --   config = function()
+  --     require('neotest').setup {
+  --       adapters = {
+  --         require 'neotest-python' {
+  --           dap = { justMyCode = false },
+  --         },
+  --         require 'neotest-vitest' {
+  --           dap = { justMyCode = false },
+  --         },
+  --         require 'neotest-jest' {
+  --           dap = { justMyCode = false },
+  --         },
+  --       },
+  --     }
+  --   end,
+  -- },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
   --
   -- Themes go here!!
 
-  {
-    'folke/tokyonight.nvim',
-    lazy = true,
-    opts = { style = 'moon' },
-  },
+  -- {
+  --   'folke/tokyonight.nvim',
+  --   lazy = true,
+  --   opts = { style = 'moon' },
+  -- },
 
-  {
-    'catppuccin/nvim',
-    lazy = true,
-    name = 'catppuccin',
-    opts = {
-      integrations = {
-        aerial = true,
-        alpha = true,
-        cmp = true,
-        dashboard = true,
-        flash = true,
-        fzf = true,
-        grug_far = true,
-        gitsigns = true,
-        headlines = true,
-        illuminate = true,
-        indent_blankline = { enabled = true },
-        leap = true,
-        lsp_trouble = true,
-        mason = true,
-        markdown = true,
-        mini = true,
-        native_lsp = {
-          enabled = true,
-          underlines = {
-            errors = { 'undercurl' },
-            hints = { 'undercurl' },
-            warnings = { 'undercurl' },
-            information = { 'undercurl' },
-          },
-        },
-        navic = { enabled = true, custom_bg = 'lualine' },
-        neotest = true,
-        neotree = true,
-        noice = true,
-        notify = true,
-        semantic_tokens = true,
-        snacks = true,
-        telescope = true,
-        treesitter = true,
-        treesitter_context = true,
-        which_key = true,
-      },
-    },
-    specs = {
-      {
-        'akinsho/bufferline.nvim',
-        optional = true,
-        opts = function(_, opts)
-          if (vim.g.colors_name or ''):find 'catppuccin' then
-            opts.highlights = require('catppuccin.groups.integrations.bufferline').get()
-          end
-        end,
-      },
-    },
-  },
+  -- {
+  --   'catppuccin/nvim',
+  --   lazy = true,
+  --   name = 'catppuccin',
+  --   opts = {
+  --     integrations = {
+  --       aerial = true,
+  --       alpha = true,
+  --       cmp = true,
+  --       dashboard = true,
+  --       flash = true,
+  --       fzf = true,
+  --       grug_far = true,
+  --       gitsigns = true,
+  --       headlines = true,
+  --       illuminate = true,
+  --       indent_blankline = { enabled = true },
+  --       leap = true,
+  --       lsp_trouble = true,
+  --       mason = true,
+  --       markdown = true,
+  --       mini = true,
+  --       native_lsp = {
+  --         enabled = true,
+  --         underlines = {
+  --           errors = { 'undercurl' },
+  --           hints = { 'undercurl' },
+  --           warnings = { 'undercurl' },
+  --           information = { 'undercurl' },
+  --         },
+  --       },
+  --       navic = { enabled = true, custom_bg = 'lualine' },
+  --       neotest = true,
+  --       neotree = true,
+  --       noice = true,
+  --       notify = true,
+  --       semantic_tokens = true,
+  --       snacks = true,
+  --       telescope = true,
+  --       treesitter = true,
+  --       treesitter_context = true,
+  --       which_key = true,
+  --     },
+  --   },
+  --   specs = {
+  --     {
+  --       'akinsho/bufferline.nvim',
+  --       optional = true,
+  --       opts = function(_, opts)
+  --         if (vim.g.colors_name or ''):find 'catppuccin' then
+  --           opts.highlights = require('catppuccin.groups.integrations.bufferline').get()
+  --         end
+  --       end,
+  --     },
+  --   },
+  -- },
 
-  {
-    'akinsho/bufferline.nvim',
-    optional = true,
-    opts = function(_, opts)
-      if (vim.g.colors_name or ''):find 'catppuccin' then
-        opts.highlights = require('catppuccin.groups.integrations.bufferline').get()
-      end
-    end,
-  },
+  -- {
+  --   'akinsho/bufferline.nvim',
+  --   optional = true,
+  --   opts = function(_, opts)
+  --     if (vim.g.colors_name or ''):find 'catppuccin' then
+  --       opts.highlights = require('catppuccin.groups.integrations.bufferline').get()
+  --     end
+  --   end,
+  -- },
 
   -- This is often very useful to both group configuration, as well as handle
   -- lazy loading plugins that don't need to be loaded immediately at startup.
@@ -504,9 +560,11 @@ require('lazy').setup({
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
     dependencies = {
-      'nvim-lua/plenary.nvim',
+      {'nvim-lua/plenary.nvim', lazy = true, optional = true},
       { -- If encountering errors, see telescope-fzf-native README for installation instructions
         'nvim-telescope/telescope-fzf-native.nvim',
+        lazy = true,
+        optional = true,
 
         -- `build` is used to run some command when the plugin is installed/updated.
         -- This is only run then, not every time Neovim starts up.
@@ -518,10 +576,10 @@ require('lazy').setup({
           return vim.fn.executable 'make' == 1
         end,
       },
-      { 'nvim-telescope/telescope-ui-select.nvim' },
+      { 'nvim-telescope/telescope-ui-select.nvim', lazy = true, optional = true },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font, lazy = true, optional = true },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -630,7 +688,7 @@ require('lazy').setup({
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
-      { 'j-hui/fidget.nvim', opts = {} },
+      --{ 'j-hui/fidget.nvim', opts = {} },
 
       -- Allows extra capabilities provided by blink.cmp
       'saghen/blink.cmp',
@@ -802,7 +860,7 @@ require('lazy').setup({
       --  By default, Neovim doesn't support everything that is in the LSP specification.
       --  When you add blink.cmp, luasnip, etc. Neovim now has *more* capabilities.
       --  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
-      local capabilities = require('blink.cmp').get_lsp_capabilities()
+      -- local capabilities = require('blink.cmp').get_lsp_capabilities()
 
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -879,46 +937,46 @@ require('lazy').setup({
     end,
   },
 
-  { -- Autoformat
-    'stevearc/conform.nvim',
-    event = { 'BufWritePre' },
-    cmd = { 'ConformInfo' },
-    keys = {
-      {
-        '<leader>f',
-        function()
-          require('conform').format { async = true, lsp_format = 'fallback' }
-        end,
-        mode = '',
-        desc = '[F]ormat buffer',
-      },
-    },
-    opts = {
-      notify_on_error = false,
-      format_on_save = function(bufnr)
-        -- Disable "format_on_save lsp_fallback" for languages that don't
-        -- have a well standardized coding style. You can add additional
-        -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = true, cpp = true }
-        if disable_filetypes[vim.bo[bufnr].filetype] then
-          return nil
-        else
-          return {
-            timeout_ms = 500,
-            lsp_format = 'fallback',
-          }
-        end
-      end,
-      formatters_by_ft = {
-        lua = { 'stylua' },
-        -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
-        --
-        -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
-      },
-    },
-  },
+  -- { -- Autoformat
+  --   'stevearc/conform.nvim',
+  --   event = { 'BufWritePre' },
+  --   cmd = { 'ConformInfo' },
+  --   keys = {
+  --     {
+  --       '<leader>f',
+  --       function()
+  --         require('conform').format { async = true, lsp_format = 'fallback' }
+  --       end,
+  --       mode = '',
+  --       desc = '[F]ormat buffer',
+  --     },
+  --   },
+  --   opts = {
+  --     notify_on_error = false,
+  --     format_on_save = function(bufnr)
+  --       -- Disable "format_on_save lsp_fallback" for languages that don't
+  --       -- have a well standardized coding style. You can add additional
+  --       -- languages here or re-enable it for the disabled ones.
+  --       local disable_filetypes = { c = true, cpp = true }
+  --       if disable_filetypes[vim.bo[bufnr].filetype] then
+  --         return nil
+  --       else
+  --         return {
+  --           timeout_ms = 500,
+  --           lsp_format = 'fallback',
+  --         }
+  --       end
+  --     end,
+  --     formatters_by_ft = {
+  --       lua = { 'stylua' },
+  --       -- Conform can also run multiple formatters sequentially
+  --       -- python = { "isort", "black" },
+  --       --
+  --       -- You can use 'stop_after_first' to run the first available formatter from the list
+  --       -- javascript = { "prettierd", "prettier", stop_after_first = true },
+  --     },
+  --   },
+  -- },
 
   { -- Autocompletion
     'saghen/blink.cmp',
@@ -953,6 +1011,7 @@ require('lazy').setup({
         opts = {},
       },
       'folke/lazydev.nvim',
+      'rafamadriz/friendly-snippets'
     },
     --- @module 'blink.cmp'
     --- @type blink.cmp.Config
@@ -979,7 +1038,12 @@ require('lazy').setup({
         -- <c-k>: Toggle signature help
         --
         -- See :h blink-cmp-config-keymap for defining your own keymap
-        preset = 'default',
+        -- keymap = {
+        --   preset = 'default',
+        --   ['<C-j>'] = {'select_next', 'fallback'},
+        --   ['<C-k>'] = {'select_up', 'fallback'},
+        --   ['<CR>'] = {'select_and_accept'}
+        -- }
 
         -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
         --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
@@ -998,7 +1062,7 @@ require('lazy').setup({
       },
 
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'lazydev' },
+        default = { 'lsp', 'path', 'snippets', 'lazydev', 'buffer' },
         providers = {
           lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
         },
@@ -1020,29 +1084,29 @@ require('lazy').setup({
     },
   },
 
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'folke/tokyonight.nvim',
-    priority = 999, -- Make sure to load this before all the other start plugins.
-    config = function()
-      ---@diagnostic disable-next-line: missing-fields
-      require('tokyonight').setup {
-        styles = {
-          comments = { italic = false }, -- Disable italics in comments
-        },
-      }
-
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-    end,
-  },
+  -- { -- You can easily change to a different colorscheme.
+  --   -- Change the name of the colorscheme plugin below, and then
+  --   -- change the command in the config to whatever the name of that colorscheme is.
+  --   --
+  --   -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
+  --   'folke/tokyonight.nvim',
+  --   priority = 999, -- Make sure to load this before all the other start plugins.
+  --   config = function()
+  --     ---@diagnostic disable-next-line: missing-fields
+  --     require('tokyonight').setup {
+  --       styles = {
+  --         comments = { italic = false }, -- Disable italics in comments
+  --       },
+  --     }
+  --
+  --     -- Load the colorscheme here.
+  --     -- Like many other themes, this one has different styles, and you could load
+  --     -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
+  --   end,
+  -- },
 
   -- Highlight todo, notes, etc in comments
-  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+  --{ 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
@@ -1053,7 +1117,15 @@ require('lazy').setup({
       --  - va)  - [V]isually select [A]round [)]paren
       --  - yinq - [Y]ank [I]nside [N]ext [Q]uote
       --  - ci'  - [C]hange [I]nside [']quote
-      require('mini.ai').setup { n_lines = 500 }
+      --require('mini.ai').setup { n_lines = 500 }
+
+     --require('mini.align').setup()
+
+      --require('mini.completion').setup()
+      require('mini.pairs').setup()
+      require('mini.snippets').setup()
+
+      require('mini.basics').setup() 
 
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
       --
@@ -1065,18 +1137,16 @@ require('lazy').setup({
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
       --  and try some other statusline plugin
-      local statusline = require 'mini.statusline'
-      -- set use_icons to true if you have a Nerd Font
-      statusline.setup { use_icons = true }
-
-      -- You can configure sections in the statusline by overriding their
-      -- default behavior. For example, here we set the section for
-      -- cursor location to LINE:COLUMN
-      ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_location = function()
-        return '%2l:%-2v'
-      end
-
+       --local statusline = require 'mini.statusline'
+      -- -- set use_icons to true if you have a Nerd Font
+       --statusline.setup { use_icons = true }
+      --
+      -- -- You can configure sections in the statusline by overriding their
+      -- -- default behavior. For example, here we set the section for
+      -- -- cursor location to LINE:COLUMN
+      -- ---@diagnostic disable-next-line: duplicate-set-field
+    
+      --
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
@@ -1107,8 +1177,7 @@ require('lazy').setup({
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   },
 
-  -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
-  -- init.lua. If you want these files, they are in the repository, so you can just download them and
+  -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the-- init.lua. If you want these files, they are in the repository, so you can just download them and
   -- place them in the correct locations.
 
   -- NOTE: Next step on your Neovim journey: Add/Configure additional plugins for Kickstart
@@ -1117,10 +1186,10 @@ require('lazy').setup({
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
   require 'kickstart.plugins.debug',
-  require 'kickstart.plugins.indent_line',
+  --require 'kickstart.plugins.indent_line',
   require 'kickstart.plugins.lint',
-  require 'kickstart.plugins.autopairs',
-  require 'kickstart.plugins.neo-tree',
+  --require 'kickstart.plugins.autopairs',
+  --require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
@@ -1156,6 +1225,19 @@ require('lazy').setup({
 })
 
 vim.cmd 'colorscheme cyberdream'
+
+-- neotree keymaps
+--vim.keymap.set('n', '<\\>')
+
+vim.keymap.set("n", "\\", "<cmd>Neotree toggle<CR>", { 
+  desc = "Toggle Neo-tree",
+  nowait = true,
+  noremap = true,
+  silent = true,
+} )
+
+vim.o.shiftwidth = 4
+vim.o.tabstop = 4
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

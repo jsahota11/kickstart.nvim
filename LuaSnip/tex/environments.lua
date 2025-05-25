@@ -44,4 +44,21 @@ return {
       { delimiters = '<>' }
     )
   ),
+  s(
+    { trig = 'fr', dscr = 'A LaTeX frame environment (for beamer slides)' },
+    fmt(
+      [[
+        \begin{frame}
+                \frametitle{<>}
+
+                \begin{itemize}
+                        \item 
+                \end{itemize}
+        \end{frame}
+      ]],
+
+      { i(1) },
+      { delimiters = '<>' }
+    )
+  ),
 }

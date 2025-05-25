@@ -46,7 +46,7 @@ return {
     t '\\epsilon',
   }),
 
-  s({ trig = 'mm', dscr = 'Inline math mode' }, fmt('$<>$', { i(1) }, { delimiters = '<>' })),
+  s({ trig = 'mm', dscr = 'Inline math mode' }, fmt('$\\<>$', { i(1) }, { delimiters = '<>' })),
 
   s({ trig = 'tt', dscr = 'Expand to texttt' }, fmt('\\texttt{<>}', { i(1) }, { delimiters = '<>' })),
 
